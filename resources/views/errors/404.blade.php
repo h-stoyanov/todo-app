@@ -1,1 +1,7 @@
-<h2>{{ $exception->getMessage() }}</h2>
+<h2>
+    @if ($exception->getMessage())
+        {{$exception->getMessage()}}
+    @else
+        Page not found.
+    @endif
+</h2>

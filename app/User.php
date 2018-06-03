@@ -65,4 +65,9 @@ class User extends Authenticatable
     {
         return null !== $this->roles()->where('name', $role)->first();
     }
+
+    public function taskLists()
+    {
+        return $this->hasMany('App\TaskList');
+    }
 }
