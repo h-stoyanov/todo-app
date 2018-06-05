@@ -25,17 +25,6 @@ class TaskListController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-        return response('blah');
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -43,18 +32,17 @@ class TaskListController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $this->validate($request, [
+           'name' => 'required|min:1'
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\TaskList  $taskList
-     * @return \Illuminate\Http\Response
-     */
-    public function show(TaskList $taskList)
-    {
-        //
+        $taskList = new TaskList();
+        $taskList->name = $request->input('name');
+        $taskList->user_id = Auth::id();
+        if ($taskList->save()){
+            return response()->json(['message' => 'Task list created.', 'id' => $taskList->id]);
+        }
+        return response()->json(['message' => 'Failed to create task list.'], 400);
     }
 
     /**

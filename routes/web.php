@@ -14,10 +14,8 @@
 Route::get('/', 'TaskListController@index')->name('home');
 
 Route::middleware('role:user')->group(function (){
-    Route::resource('lists', 'TaskListController')->except(['index', 'show']);
+    Route::resource('lists', 'TaskListController')->except(['index', 'create', 'edit', 'show']);
     Route::resource('tasks', 'TaskController')->except(['index', 'create', 'edit', 'show']);
 });
 
 Auth::routes();
-
-

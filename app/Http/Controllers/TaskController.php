@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Task;
+use App\TaskList;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -15,18 +17,18 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $this->validate($request, [
+            'name' => 'required|min:1',
+            'list_id' => 'required'
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Task $task)
-    {
-        //
+        $task = new Task();
+        $task->name = $request->input('name');
+        $task->task_list_id = TaskList::where('id', $request->input('list_id'))->firstOrFail()->id;
+        if ($task->save()){
+            return response()->json(['message' => 'Task created.', 'id' => $task->id]);
+        }
+        return response()->json(['message' => 'Failed to create task'], 400);
     }
 
     /**
@@ -38,8 +40,8 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        $completed = $request->input()['completed'] ?? null;
-        $name = $request->input()['name'] ?? null;
+        $completed = $request->input('completed') ?? null;
+        $name = $request->input('name') ?? null;
         if (isset($name))
             $task->name = $name;
         if (isset($completed))

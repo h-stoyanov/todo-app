@@ -11,12 +11,13 @@
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}"></script>
     <script>
+        const token = $('meta[name="csrf-token"]').attr('content');
         $.ajaxSetup({
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': token
                 },
                 data: {
-                    "_token": $('meta[name="csrf-token"]').attr('content')
+                    "_token": token
                 }
             }
         );
@@ -85,7 +86,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            @endguest
+                    @endguest
                 </ul>
             </div>
         </div>
