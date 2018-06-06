@@ -110,15 +110,4 @@ class TaskListController extends Controller
         }
         return response()->json(['message' => 'Cannot update task list'], 400);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\TaskList  $taskList
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(TaskList $taskList)
-    {
-        //
-    }
 }

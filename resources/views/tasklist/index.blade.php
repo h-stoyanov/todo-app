@@ -31,7 +31,6 @@
                                     </div>
                                     <div id="{{$list->id}}" class="panel-collapse collapse" role="tabpanel">
                                         <div class="panel-body">
-                                            @if($list->tasks()->count())
                                                 <table class="table table-striped table-condensed">
                                                     <thead>
                                                     <tr>
@@ -58,7 +57,6 @@
                                                     @endforeach
                                                     </tbody>
                                                 </table>
-                                            @endif
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12" data-list-id="{{$list->id}}">
                                                         <a role="button" href="{{route('export', ['id' => $list->id])}}" target="_blank" class="btn btn-primary pull-right export-tasks"><span class="glyphicon glyphicon-floppy-save"></span> Export</a>
@@ -195,7 +193,16 @@
                     '           </h4>\n' +
                     '       </div>\n' +
                     '       <div id="' + listId + '" class="panel-collapse collapse" role="tabpanel">\n' +
-                    '           <div class="panel-body">\n' +
+                    '           <div class="panel-body">\n ' +
+                    '               <table class="table table-striped table-condensed">\n' +
+                    '                   <thead>\n' +
+                    '                   <tr>\n' +
+                    '                       <th class="col-md-2 col-sm-2">Completed</th>\n' +
+                    '                       <th class="col-md-8 col-sm-8">Name</th>\n' +
+                    '                       <th class="col-md-2 col-sm-2">Actions</th>\n' +
+                    '                   </tr>\n' +
+                    '                   </thead>\n' +
+                    '                   <tbody></tbody></table>\n' +
                     '                   <div class="row">\n' +
                     '                       <div class="col-md-12 col-sm-12" data-list-id="'+listId +'">\n' +
                     '                           <button class="btn btn-primary pull-right export-list"><span class="glyphicon glyphicon-export"></span> Export</button>\n' +
