@@ -61,7 +61,7 @@
                                             @endif
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12" data-list-id="{{$list->id}}">
-                                                        <button class="btn btn-primary pull-right export-list"><span class="glyphicon glyphicon-export"></span> Export</button>
+                                                        <a role="button" href="{{route('export', ['id' => $list->id])}}" target="_blank" class="btn btn-primary pull-right export-tasks"><span class="glyphicon glyphicon-floppy-save"></span> Export</a>
                                                         <button class="btn btn-danger pull-right delete-list"><span class="glyphicon glyphicon-remove"></span> Delete</button>
                                                         <button class="btn btn-warning pull-right archive-list"><span class="glyphicon glyphicon-save"></span> Archive</button>
                                                         <button class="btn btn-success pull-right add-task"><span class="glyphicon glyphicon-plus"></span> Add Task</button>
@@ -79,7 +79,7 @@
     </div>
     <script>
         $(document).ready(function () {
-            $('input[type=checkbox]').change(function () {
+            $(document).on('change', 'input[type=checkbox]', function () {
                 let checked = $(this).is(':checked');
                 $.ajax({
                     url: '/tasks/' + $(this).attr('data-task-id'),
@@ -142,6 +142,44 @@
                     success: function (response) {
                         $('div#accordion').append(buildListPanel(response.id, newListName));
                         newListInput.val('');
+                    }
+                })
+            });
+
+            $(document).on('click', 'button.archive-list', function (e) {
+                e.preventDefault();
+                const listId = $(this).parent().attr('data-list-id');
+                $.ajax({
+                    url: '/lists/' + listId,
+                    method: 'put',
+                    data: {archive: 1},
+                    success: function () {
+                        $('div#' + listId).parent().remove();
+                        let msg = 'Successfully archived the list';
+                        bootbox.alert(msg);
+                    },
+                    error: function () {
+                        let msg = 'Cannot archive the list';
+                        bootbox.alert(msg);
+                    }
+                })
+            });
+
+            $(document).on('click', 'button.delete-list', function (e) {
+                e.preventDefault();
+                const listId = $(this).parent().attr('data-list-id');
+                $.ajax({
+                    url: '/lists/' + listId,
+                    method: 'put',
+                    data: {delete_list: 1},
+                    success: function () {
+                        $('div#' + listId).parent().remove();
+                        let msg = 'Your delete request was send to administrator!';
+                        bootbox.alert(msg);
+                    },
+                    error: function () {
+                        let msg = 'Cannot delete the list';
+                        bootbox.alert(msg);
                     }
                 })
             });

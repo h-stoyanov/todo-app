@@ -16,6 +16,9 @@ Route::get('/', 'TaskListController@index')->name('home');
 Route::middleware('role:user')->group(function (){
     Route::resource('lists', 'TaskListController')->except(['index', 'create', 'edit', 'show']);
     Route::resource('tasks', 'TaskController')->except(['index', 'create', 'edit', 'show']);
+    Route::get('/archive', 'TaskListController@archive')->name('archive');
+    Route::get('/deleted', 'TaskListController@deleted')->name('deleted');
+    Route::get('/export/{id}', 'TaskListController@exportTasks')->name('export');
 });
 
 Auth::routes();

@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use App\Task;
 use App\TaskList;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -25,7 +24,7 @@ class TaskController extends Controller
         $task = new Task();
         $task->name = $request->input('name');
         $task->task_list_id = TaskList::where('id', $request->input('list_id'))->firstOrFail()->id;
-        if ($task->save()){
+        if ($task->save()) {
             return response()->json(['message' => 'Task created.', 'id' => $task->id]);
         }
         return response()->json(['message' => 'Failed to create task'], 400);
@@ -34,8 +33,8 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Task  $task
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Task $task
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Task $task)
@@ -47,8 +46,8 @@ class TaskController extends Controller
         if (isset($completed))
             if ($completed == 'false') $completed = false;
             elseif ($completed == 'true') $completed = true;
-            $task->completed = $completed;
-        if ($task->save()){
+        $task->completed = $completed;
+        if ($task->save()) {
             return response()->json(['message' => 'success']);
         }
         return response()->json(['message' => 'fail'], 400);
@@ -57,12 +56,13 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Task  $task
+     * @param  \App\Task $task
      * @return \Illuminate\Http\Response
      */
     public function destroy(Task $task)
     {
-        if ($task->delete()){
+        $taskList = $task->taskList()->get();
+        if (!($taskList->archived || $taskList->delete_request) && $task->delete()) {
             return response()->json(['message' => 'success']);
         }
         return response()->json(['message' => 'fail'], 400);
