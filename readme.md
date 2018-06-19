@@ -5,6 +5,7 @@ To start the app you have to make the following steps:
 - Run `npm run prod` to compile the required resources
 - Setup your own database settings in .env file (you might need to create an empty database).
 - Run `php artisan migrate:fresh --seed` to make the database and populate with users.
+- Run `php artisan serve` and open https://localhost:8000
 
 To login as admin use email `admin@admin.com` and password `toornimda`.
 To login as user use email `user@user.com` and password `password`.
